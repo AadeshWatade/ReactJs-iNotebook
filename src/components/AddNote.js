@@ -39,10 +39,10 @@ const AddNote = () => {
           onChange={onChange}
           id="title"
           placeholder="Title (min 5 characters)"
-          className="border text-white p-2 my-2 mb-8 bg-transparent focus:border-primary"
+          className="border text-white p-2 my-2 mb-6 bg-transparent focus:border-primary"
         />
         <label htmlFor="description">Description</label>
-        {/* <div className="text-black">
+        <div className="text-black my-2 mb-6">
           <CKEditor
             editor={ClassicEditor}
             data={note.description}
@@ -52,10 +52,11 @@ const AddNote = () => {
             onChange={(event, editor) => {
               const data = editor.getData();
               note.description = data;
+              console.log(note.description);
             }}
           />
-        </div> */}
-        <textarea
+        </div>
+        {/* <textarea
           value={note.description}
           required
           minLength={5}
@@ -64,8 +65,8 @@ const AddNote = () => {
           onChange={onChange}
           id="description"
           placeholder="Description (min 5 characters)"
-          className="border text-white p-2 my-2 mb-8 bg-transparent"
-        />
+          className="border text-white p-2 my-2 mb-6 bg-transparent"
+        /> */}
         <label htmlFor="tag">Tag</label>
         <input
           list="tags"
@@ -82,10 +83,10 @@ const AddNote = () => {
           <option value="personal" />
         </datalist>
         <button
-          disabled={note.title.length <= 5 || note.description.length <= 5}
+          disabled={note.title.length <= 4 || note.description.length <= 4}
           onClick={handleSubmit}
           type="submit"
-          className="bg-primary text-black my-4 flex place-self-end justify-center w-24 rounded-md p-1 disabled:cursor-not-allowed">
+          className="bg-primary text-black flex place-self-end justify-center w-24 rounded-md p-1 disabled:cursor-not-allowed">
           &#x2B; Add Note
         </button>
       </form>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Footer from './Footer';
-import Navbar from './Navbar';
+import Footer from './common/Footer';
+import Navbar from './common/Navbar';
 
 const Layout = () => {
   return (
-    <div>
+    <div className="font-poppins">
       <Navbar />
       <Outlet />
       <Footer />

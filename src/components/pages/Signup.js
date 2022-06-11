@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IoLogoAppleAr } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import InputField from './InputField';
+import InputField from '../common/InputField';
 
 const Signup = () => {
   let navigate = useNavigate();

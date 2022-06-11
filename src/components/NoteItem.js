@@ -28,7 +28,7 @@ const NoteItem = (props) => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="fixed inset-0 z-10 overflow-y-auto backdrop-blur-sm transition-all duration-300 bg-[#000000b9]"
+          className="font-poppins fixed inset-0 z-10 overflow-y-auto backdrop-blur-sm transition-all duration-300 bg-[#000000b9]"
           onClose={closeModal}>
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
@@ -75,7 +75,10 @@ const NoteItem = (props) => {
                   ) : (
                     ''
                   )}
-                  <p className="">{note.description} </p>
+                  <p
+                    dangerouslySetInnerHTML={{ __html: note.description }}
+                    className=""
+                  />
                 </div>
               </div>
             </Transition.Child>
@@ -83,7 +86,7 @@ const NoteItem = (props) => {
         </Dialog>
       </Transition>
 
-      <div className=" border border-primary p-3 rounded-md shadow-md hover:scale-105 hover:shadow-primary transition-all duration-200 hover:shadow-md -mx-20 md:mx-1">
+      <div className=" border border-primary p-3 rounded-md shadow-md hover:scale-105 hover:shadow-primary transition-all duration-200 hover:shadow-md -mx-20 md:mx-1 max-h-32 overflow-hidden">
         <div className="flex flex-row justify-between">
           <p className="text-xl font-semibold">{note.title}</p>
           <section className="flex space-x-4">
@@ -111,7 +114,10 @@ const NoteItem = (props) => {
           ) : (
             ''
           )}
-          <p className="line-clamp-2">{note.description} </p>
+          <div
+            dangerouslySetInnerHTML={{ __html: note.description }}
+            className="line-clamp-1"
+          />
         </div>
       </div>
     </>
