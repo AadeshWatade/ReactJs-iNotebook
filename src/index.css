@@ -4,11 +4,11 @@
 
 .ck {
   --ck-custom-background: #090909;
-  --ck-custom-foreground: hsl(255, 3%, 18%);
-  --ck-custom-border: hsl(300, 1%, 22%);
-  --ck-custom-white: hsl(0, 0%, 100%);
+  --ck-custom-foreground: #2d2d2f;
+  --ck-custom-border: #393839;
+  --ck-custom-white: #ffffff;
 
-  --ck-color-text: hsl(0, 0%, 98%);
+  --ck-color-text: #fafafa;
 
   --ck-color-button-default-background: var(--ck-custom-background);
   --ck-color-button-default-hover-background: #383839;

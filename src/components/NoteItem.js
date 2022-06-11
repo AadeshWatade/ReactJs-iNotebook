@@ -1,5 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, useContext, useRef, useState } from 'react';
+import { AiOutlineCopy } from 'react-icons/ai';
 import { IoCloseCircle } from 'react-icons/io5';
 
 import { MdDelete, MdEdit } from 'react-icons/md';
@@ -68,13 +69,22 @@ const NoteItem = (props) => {
                   </button>
                 </Dialog.Title>
                 <div className="flex flex-col justify-between">
-                  {note.tag ? (
-                    <p className="w-fit text-xs text-primary mb-4 py-1 px-2 border border-primary rounded-2xl">
-                      {note.tag}
-                    </p>
-                  ) : (
-                    ''
-                  )}
+                  <div className="flex flex-row justify-between">
+                    {note.tag ? (
+                      <p className="w-fit text-xs text-primary mb-4 py-1 px-2 border border-primary rounded-2xl">
+                        {note.tag}
+                      </p>
+                    ) : (
+                      ''
+                    )}
+                    <AiOutlineCopy
+                      onClick={() => {
+                        navigator.clipboard.writeText(note.description);
+                        toast.success('Copied to clipboard!');
+                      }}
+                      className="text-primary text-2xl hover:cursor-pointer"
+                    />
+                  </div>
                   <p
                     dangerouslySetInnerHTML={{ __html: note.description }}
                     className=""
