@@ -1,11 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { AiFillFileAdd } from 'react-icons/ai';
+import { IoMdMic, IoMdMicOff } from 'react-icons/io';
 import { toast } from 'react-toastify';
 import noteContext from '../context/notes/noteContext';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
 
 const AddNote = () => {
+  const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const context = useContext(noteContext);
   const { addNote } = context;
   const [note, setNote] = useState({
@@ -23,6 +28,7 @@ const AddNote = () => {
   const onChange = (e) => {
     setNote({ ...note, [e.target.name]: e.target.value });
   };
+
   return (
     <>
       <p className="flex flex-row mb-6 text-3xl">
@@ -41,7 +47,27 @@ const AddNote = () => {
           placeholder="Title (min 5 characters)"
           className="border text-white p-2 my-2 mb-6 bg-transparent focus:border-primary"
         />
-        <label htmlFor="description">Description</label>
+        <div className="flex flex-row justify-between">
+          <label htmlFor="description">Description</label>
+          {listening ? (
+            <IoMdMicOff
+              className="bg-red-400 text-black p-1 text-3xl"
+              onClick={() => {
+                SpeechRecognition.stopListening({ continuous: true });
+                note.description = transcript;
+                resetTranscript();
+              }}
+            />
+          ) : (
+            <IoMdMic
+              className="bg-primary text-black p-1 text-3xl rounded-sm"
+              onClick={() => {
+                SpeechRecognition.startListening({ continuous: true });
+              }}
+            />
+          )}
+        </div>
+        <p className="text-gray-400">{transcript}</p>
         <div className="text-black my-2 mb-6">
           <CKEditor
             editor={ClassicEditor}
@@ -52,7 +78,7 @@ const AddNote = () => {
             onChange={(event, editor) => {
               const data = editor.getData();
               note.description = data;
-              console.log(note.description);
+              note.description = transcript;
             }}
           />
         </div>
