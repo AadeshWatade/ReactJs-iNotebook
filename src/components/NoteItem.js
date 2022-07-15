@@ -1,11 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment, useContext, useRef, useState } from 'react';
-import { AiOutlineCopy } from 'react-icons/ai';
 import { IoCloseCircle } from 'react-icons/io5';
-
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import noteContext from '../context/notes/noteContext';
+import ToolTip from './common/ToolTip';
 
 const NoteItem = (props) => {
   const context = useContext(noteContext);
@@ -77,13 +76,13 @@ const NoteItem = (props) => {
                     ) : (
                       ''
                     )}
-                    <AiOutlineCopy
+                    {/* <AiOutlineCopy
                       onClick={() => {
                         navigator.clipboard.writeText(note.description);
                         toast.success('Copied to clipboard!');
                       }}
                       className="text-primary text-2xl hover:cursor-pointer"
-                    />
+                    /> */}
                   </div>
                   <p
                     dangerouslySetInnerHTML={{ __html: note.description }}
@@ -98,22 +97,31 @@ const NoteItem = (props) => {
 
       <div className=" border border-primary p-3 rounded-md shadow-md hover:scale-105 hover:shadow-primary transition-all duration-200 hover:shadow-md -mx-20 md:mx-1 max-h-32 overflow-hidden">
         <div className="flex flex-row justify-between">
-          <p className="text-xl font-semibold">{note.title}</p>
+          <p className="text-xl font-semibold line-clamp-1">{note.title}</p>
           <section className="flex space-x-4">
-            <MdEdit
-              onClick={() => {
-                updateNote(note);
-              }}
-              className="text-yellow-500 hover:scale-150 cursor-pointer"
-            />
-
-            <MdDelete
-              onClick={() => {
-                deleteNote(note._id);
-                toast.success('Note deleted successfully!');
-              }}
-              className="text-red-500 hover:scale-150 cursor-pointer"
-            />
+            <>
+              <MdEdit
+                data-tip
+                data-for="edit"
+                onClick={() => {
+                  updateNote(note);
+                }}
+                className="text-yellow-500 hover:scale-150 cursor-pointer"
+              />
+              <ToolTip id="edit" place="top" title="Edit note" />
+            </>
+            <>
+              <MdDelete
+                data-tip
+                data-for="delete"
+                onClick={() => {
+                  deleteNote(note._id);
+                  toast.success('Note deleted successfully!');
+                }}
+                className="text-red-500 hover:scale-150 cursor-pointer"
+              />
+              <ToolTip id="delete" place="top" title="Delete note" />
+            </>
           </section>
         </div>
         <div ref={ref} onClick={openModal} className="cursor-pointer">

@@ -8,8 +8,9 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import ToolTip from './common/ToolTip';
 
-const AddNote = () => {
+const AddNote = ({ uniqueCategories }) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const context = useContext(noteContext);
   const { addNote } = context;
@@ -50,21 +51,31 @@ const AddNote = () => {
         <div className="flex flex-row justify-between">
           <label htmlFor="description">Description</label>
           {listening ? (
-            <IoMdMicOff
-              className="bg-red-400 text-black p-1 text-3xl"
-              onClick={() => {
-                SpeechRecognition.stopListening({ continuous: true });
-                note.description = transcript;
-                resetTranscript();
-              }}
-            />
+            <>
+              <IoMdMicOff
+                data-tip
+                data-for="micStop"
+                className="bg-red-400 text-black p-1 text-3xl transition-all duration-500 cursor-pointer"
+                onClick={() => {
+                  SpeechRecognition.stopListening({ continuous: true });
+                  note.description = transcript;
+                  resetTranscript();
+                }}
+              />
+              <ToolTip id="micStop" place="top" title="Stop" />
+            </>
           ) : (
-            <IoMdMic
-              className="bg-primary text-black p-1 text-3xl rounded-sm"
-              onClick={() => {
-                SpeechRecognition.startListening({ continuous: true });
-              }}
-            />
+            <>
+              <IoMdMic
+                data-tip
+                data-for="micStart"
+                className="bg-primary text-black p-1 text-3xl rounded-sm transition-all duration-500 cursor-pointer"
+                onClick={() => {
+                  SpeechRecognition.startListening({ continuous: true });
+                }}
+              />
+              <ToolTip id="micStart" place="top" title="Tap to speak" />
+            </>
           )}
         </div>
         <p className="text-gray-400">{transcript}</p>
@@ -78,7 +89,6 @@ const AddNote = () => {
             onChange={(event, editor) => {
               const data = editor.getData();
               note.description = data;
-              note.description = transcript;
             }}
           />
         </div>
@@ -105,8 +115,9 @@ const AddNote = () => {
           className="border text-white p-2 my-2 bg-transparent"
         />
         <datalist id="tags">
-          <option value="public" />
-          <option value="personal" />
+          {uniqueCategories.map((categories) => (
+            <option key={categories} value={categories} />
+          ))}
         </datalist>
         <button
           disabled={note.title.length <= 4 || note.description.length <= 4}

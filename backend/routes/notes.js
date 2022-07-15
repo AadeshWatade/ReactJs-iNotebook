@@ -105,3 +105,14 @@ router.delete('/deletenote/:id', fetchuser, async (req, res) => {
   }
 });
 module.exports = router;
+
+// Setting theme using: POST "/set_theme"
+router.get('/set_theme', async (req, res, theme) => {
+  try {
+    const current_theme = theme;
+    res.json(current_theme);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal server error');
+  }
+});

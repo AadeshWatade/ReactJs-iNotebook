@@ -16,7 +16,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = credentials;
-    const response = await fetch('http://localhost:5000/api/auth/createUser', {
+    const response = await fetch('http://localhost:5001/api/auth/createUser', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
@@ -28,7 +28,6 @@ const Signup = () => {
       }),
     });
     const json = await response.json();
-    console.log(json);
     if (json.success === true) {
       localStorage.setItem('token', json.authtoken);
       navigate('/login');
@@ -41,7 +40,7 @@ const Signup = () => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
   return (
-    <div className="bg-background flex flex-col justify-start text-gray-300">
+    <div className="bg-background flex flex-col h-screen justify-start text-gray-300">
       <p className="flex flex-row pt-12 pl-32 text-3xl align-middle space-x-1 text-primary">
         <IoLogoAppleAr className="mt-1 align-middle" />
         <p className="">iNotebook</p>

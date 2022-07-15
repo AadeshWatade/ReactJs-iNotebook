@@ -1,4 +1,4 @@
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Listbox, Transition } from '@headlessui/react';
 import React, {
   Fragment,
   useContext,
@@ -7,6 +7,8 @@ import React, {
   useState,
 } from 'react';
 import { IoCloseCircle, IoSearchCircle } from 'react-icons/io5';
+import { GoKebabVertical } from 'react-icons/go';
+import { RiFileEditFill } from 'react-icons/ri';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -15,6 +17,7 @@ import AddNote from './AddNote';
 import NoteItem from './NoteItem';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ToolTip from './common/ToolTip';
 
 const Notes = () => {
   const context = useContext(noteContext);
@@ -66,13 +69,18 @@ const Notes = () => {
   const openModal = () => {
     setIsOpen(true);
   };
+
+  const categories = notes.map((note) => note.tag).reverse();
+  const uniqueCategories = [...new Set(categories)];
+  const [selected, setSelected] = useState(categories[0]);
+  const [tagValue, setTagValue] = useState(null);
+
   return (
     <div className="py-16 px-32 bg-background text-white">
-      <AddNote />
+      <AddNote uniqueCategories={uniqueCategories} />
       <button ref={ref} type="button" onClick={openModal} className="hidden">
         Open dialog
       </button>
-
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
@@ -90,7 +98,6 @@ const Notes = () => {
               <Dialog.Overlay className="fixed inset-0" />
             </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true">
@@ -183,9 +190,11 @@ const Notes = () => {
         </Dialog>
       </Transition>
       <div className="flex flex-row mt-16 mb-6 justify-between -mx-20 md:mx-3">
-        <p className="text-2xl">Your Notes</p>
+        <p className="text-2xl flex flex-row">
+          <RiFileEditFill className="my-auto mx-2" /> Your Notes
+        </p>
         <div className="flex flex-row">
-          <IoSearchCircle className="absolute text-primary text-3xl mt-0.5 ml-1" />
+          <IoSearchCircle className="absolute text-primary text-4xl -mt-[2px] -ml-[3px] " />
           <input
             className="bg-background p-1 border rounded-full pl-9 text-sm"
             id="input"
@@ -193,6 +202,52 @@ const Notes = () => {
             placeholder='"Search in notes"'
             onChange={(event) => setSearchText(event.target.value)}
           />
+          <Listbox value={selected} onChange={setSelected}>
+            <div className="">
+              <Listbox.Button className="cursor-default rounded-lg ml-2 bg-background h-full px-2 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                <GoKebabVertical
+                  data-tip
+                  data-for="tags"
+                  className="my-auto text-xl "
+                />
+              </Listbox.Button>
+              <Transition
+                as={Fragment}
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0">
+                <Listbox.Options className="absolute mt-1 z-10 overflow-auto rounded-md bg-background py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary">
+                  {uniqueCategories.map((categories) => (
+                    <Listbox.Option
+                      key={categories}
+                      className={({ active }) =>
+                        `relative cursor-default select-none py-2 px-4 ${
+                          active ? 'text-primary' : 'text-white'
+                        }`
+                      }
+                      value={categories}>
+                      {({ selected }) => (
+                        <>
+                          <span
+                            onClick={(e) => {
+                              setTagValue(categories);
+                              console.log(tagValue);
+                            }}
+                            className={`block truncate ${
+                              selected ? 'font-medium' : 'font-normal'
+                            }`}>
+                            {categories}
+                          </span>
+                          {selected ? '' : null}
+                        </>
+                      )}
+                    </Listbox.Option>
+                  ))}
+                </Listbox.Options>
+              </Transition>
+            </div>
+          </Listbox>
+          <ToolTip id="tags" place="top" title="Sort by Tags" />
         </div>
       </div>
       {searchText ? (

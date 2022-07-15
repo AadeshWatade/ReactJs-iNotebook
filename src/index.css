@@ -2,11 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --primary:#0d8bde;
+    --background: '#090909',
+    --navbar: '#020202',
+  }
+  .theme-blue {
+    --primary:#0d8bde;
+    --background: '#090909',
+    --navbar: '#020202',
+  
+  }
+  .theme-violet {
+    --primary:#7a12c9;
+    --background: '#090909',
+    --navbar: '#020202',
+  }
+  .theme-green {
+    --primary:#0dde61;
+    --background: '#090909',
+    --navbar: '#020202',
+  }
+}
+
 .ck {
   --ck-custom-background: #090909;
   --ck-custom-foreground: #2d2d2f;
   --ck-custom-border: #393839;
-  --ck-custom-white: #ffffff;
+  --ck-custom-white: #f2f2f2;
 
   --ck-color-text: #fafafa;
 
