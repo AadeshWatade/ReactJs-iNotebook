@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import noteContext from '../context/notes/noteContext';
 import AddNote from './AddNote';
 import NoteItem from './NoteItem';
+import ScrollToTop from '../components/common/ScrollToTop';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import ToolTip from './common/ToolTip';
@@ -189,6 +190,9 @@ const Notes = () => {
           </div>
         </Dialog>
       </Transition>
+
+      <ScrollToTop />
+
       <div className="flex flex-row mt-16 mb-6 justify-between -mx-20 md:mx-3">
         <p className="text-2xl flex flex-row">
           <RiFileEditFill className="my-auto mx-2" /> Your Notes
@@ -203,49 +207,47 @@ const Notes = () => {
             onChange={(event) => setSearchText(event.target.value)}
           />
           <Listbox value={selected} onChange={setSelected}>
-            <div className="">
-              <Listbox.Button className="cursor-default rounded-lg ml-2 bg-background h-full px-2 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                <GoKebabVertical
-                  data-tip
-                  data-for="tags"
-                  className="my-auto text-xl "
-                />
-              </Listbox.Button>
-              <Transition
-                as={Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0">
-                <Listbox.Options className="absolute mt-1 z-10 overflow-auto rounded-md bg-background py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary">
-                  {uniqueCategories.map((categories) => (
-                    <Listbox.Option
-                      key={categories}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 px-4 ${
-                          active ? 'text-primary' : 'text-white'
-                        }`
-                      }
-                      value={categories}>
-                      {({ selected }) => (
-                        <>
-                          <span
-                            onClick={(e) => {
-                              setTagValue(categories);
-                              console.log(tagValue);
-                            }}
-                            className={`block truncate ${
-                              selected ? 'font-medium' : 'font-normal'
-                            }`}>
-                            {categories}
-                          </span>
-                          {selected ? '' : null}
-                        </>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
-            </div>
+            <Listbox.Button className="cursor-default rounded-lg ml-2 bg-background h-full px-2 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+              <GoKebabVertical
+                data-tip
+                data-for="tags"
+                className="my-auto text-xl "
+              />
+            </Listbox.Button>
+            <Transition
+              as={Fragment}
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0">
+              <Listbox.Options className="absolute mt-1 z-10 overflow-auto rounded-md bg-background py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary">
+                {uniqueCategories.map((categories) => (
+                  <Listbox.Option
+                    key={categories}
+                    className={({ active }) =>
+                      `relative cursor-default select-none py-2 px-4 ${
+                        active ? 'text-primary' : 'text-white'
+                      }`
+                    }
+                    value={categories}>
+                    {({ selected }) => (
+                      <>
+                        <span
+                          onClick={(e) => {
+                            setTagValue(categories);
+                            console.log(tagValue);
+                          }}
+                          className={`block truncate ${
+                            selected ? 'font-medium' : 'font-normal'
+                          }`}>
+                          {categories}
+                        </span>
+                        {selected ? '' : null}
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </Transition>
           </Listbox>
           <ToolTip id="tags" place="top" title="Sort by Tags" />
         </div>
