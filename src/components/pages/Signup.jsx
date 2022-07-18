@@ -16,7 +16,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = credentials;
-    const response = await fetch('http://localhost:5001/api/auth/createUser', {
+    const response = await fetch('http://localhost:5000/api/auth/createUser', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',

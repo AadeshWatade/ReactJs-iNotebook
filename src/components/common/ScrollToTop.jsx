@@ -4,13 +4,13 @@ import "aos/dist/aos.css";
 import ToolTip from "./ToolTip";
 
 const ScrollToTop = () => {
-    const [showTopBtn, setShowTopBtn] = useState(false);
+    const [showButton, setShowButton] = useState(false);
     useEffect(() => {
         window.addEventListener("scroll", () => {
             if (window.scrollY > 400) {
-                setShowTopBtn(true);
+                setShowButton(true);
             } else {
-                setShowTopBtn(false);
+                setShowButton(false);
             }
         });
     }, []);
@@ -25,15 +25,17 @@ const ScrollToTop = () => {
     }, []);
     return (
         <div className="relative">
-            <ToolTip id='addNote' place='top' title='Add a New Note' />
-            {showTopBtn && (
-                <button
-                    data-tip
-                    data-for='addNote'
-                    data-aos="fade-up"
-                    className="fixed text-background bottom-20 right-20 z-10 bg-primary rounded-full px-[14px] py-1 text-3xl cursor-pointer"
-                    onClick={goToTop}
-                >&#x2B;</button>
+            {showButton && (
+                <>
+                    <button
+                        data-tip
+                        data-for='addNote'
+                        data-aos="fade-up"
+                        className="fixed text-background bottom-16 right-20 z-10 bg-primary rounded-full px-[14px] py-1 text-3xl cursor-pointer"
+                        onClick={goToTop}
+                    >&#x2B;</button>
+                    <ToolTip id='addNote' place='top' title='Add a New Note' />
+                </>
             )}
         </div>
     );
