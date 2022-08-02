@@ -19,9 +19,14 @@ import AddNote from './AddNote';
 import NoteItem from './NoteItem';
 import noteContext from '../context/notes/noteContext';
 import ToolTip from './common/ToolTip';
-import ScrollToTop from '../components/common/ScrollToTop';
+import ScrollToTop from './common/ScrollToTop';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import InfiniteScroll from 'react-infinite-scroll-component'
+// import Loader from './common/Loader';
+
+
+
 
 const Notes = () => {
   const context = useContext(noteContext);
@@ -30,6 +35,7 @@ const Notes = () => {
   let navigate = useNavigate();
   const ref = useRef(null);
   const refClose = useRef(null);
+  const inputRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [note, setNote] = useState({
     id: '',
@@ -79,9 +85,43 @@ const Notes = () => {
   const [selected, setSelected] = useState(categories[0]);
   const [tagValue, setTagValue] = useState(null);
 
+  // const limit = 4;
+
+  // const [noteData, setNoteData] = useState(notes.slice(0, limit));
+  // const [visible, setVisible] = useState(limit);
+  // const [hasMore, setHasMore] = useState(true);
+
+  // const fetchData = () => {
+  //   const newLimit = visible + limit;
+  //   const dataToAdd = notes.slice(visible, newLimit);
+
+  //   if (notes.length > noteData.length) {
+  //     setTimeout(() => {
+  //       setNoteData([...noteData].concat(dataToAdd))
+  //     }, 2000);
+  //     setVisible(newLimit)
+  //   } else {
+  //     setHasMore(false)
+  //   }
+  // }
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    setTimeout(() => {
+
+      inputRef.current.focus()
+    }, 1000);
+  };
+  useEffect(() => {
+    document.title = `iNotebook - Home`
+    // eslint-disable-next-line
+  }, [])
   return (
     <div className="py-16 px-32 bg-background text-white">
-      <AddNote uniqueCategories={uniqueCategories} />
+      <AddNote uniqueCategories={uniqueCategories} inputRef={inputRef} />
       <button ref={ref} type="button" onClick={openModal} className="hidden">
         Open dialog
       </button>
@@ -194,7 +234,7 @@ const Notes = () => {
         </Dialog>
       </Transition>
 
-      <ScrollToTop />
+      <ScrollToTop goToTop={goToTop} />
 
       <div className="flex flex-row mt-16 mb-6 justify-between -mx-20 md:mx-3">
         <p className="text-2xl flex flex-row">
@@ -211,7 +251,7 @@ const Notes = () => {
           />
           <div>
             <Listbox value={selected} onChange={setSelected}>
-              <div className="">
+              <div className="relative mt-1">
                 <Listbox.Button className="cursor-default rounded-lg ml-2 bg-background h-full px-2 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                   <GoKebabVertical
                     data-tip
@@ -229,8 +269,7 @@ const Notes = () => {
                       <Listbox.Option
                         key={categories}
                         className={({ active }) =>
-                          `relative cursor-default select-none py-2 px-4 ${
-                            active ? 'text-primary' : 'text-white'
+                          `relative cursor-default select-none py-2 px-4 ${active ? 'text-primary' : 'text-white'
                           }`
                         }
                         value={categories}>
@@ -241,9 +280,8 @@ const Notes = () => {
                                 setTagValue(categories);
                                 console.log(tagValue);
                               }}
-                              className={`block truncate ${
-                                selected ? 'font-medium' : 'font-normal'
-                              }`}>
+                              className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                }`}>
                               {categories}
                             </span>
                             {selected ? '' : null}
@@ -266,8 +304,14 @@ const Notes = () => {
       ) : (
         ''
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto my-3">
-        {notes.length === 0 && <p className="p-8">No notes to display :(</p>}
+      {notes.length === 0 && <p className="p-8">No notes to display :(</p>}
+      {/* <InfiniteScroll
+        dataLength={noteData.length}
+        next={fetchData}
+        hasMore={hasMore}
+        loader={<Loader />}
+      > */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto mx-2 my-3">
         {notes
           .filter((note) => {
             if (searchText === '') {
@@ -293,6 +337,7 @@ const Notes = () => {
           })
           .reverse()}
       </div>
+      {/* </InfiniteScroll> */}
     </div>
   );
 };

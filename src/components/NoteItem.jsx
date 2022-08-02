@@ -23,6 +23,13 @@ const NoteItem = (props) => {
   const openModal = () => {
     setIsOpen(true);
   };
+  const DeleteNote = () => {
+    let text = "Are you sure you want to delete this note?";
+    if (window.confirm(text) === true) {
+      deleteNote(note._id);
+      toast.success('Note deleted successfully!');
+    }
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -114,10 +121,11 @@ const NoteItem = (props) => {
               <MdDelete
                 data-tip
                 data-for="delete"
-                onClick={() => {
-                  deleteNote(note._id);
-                  toast.success('Note deleted successfully!');
-                }}
+                // onClick={() => {
+                //   deleteNote(note._id);
+                //   toast.success('Note deleted successfully!');
+                // }}
+                onClick={DeleteNote}
                 className="text-red-500 hover:scale-150 cursor-pointer"
               />
               <ToolTip id="delete" place="top" title="Delete note" />
@@ -132,10 +140,10 @@ const NoteItem = (props) => {
           ) : (
             ''
           )}
-          <div
+          <p
             dangerouslySetInnerHTML={{ __html: note.description }}
             className="line-clamp-1"
-          />
+          ></p>
         </div>
       </div>
     </>

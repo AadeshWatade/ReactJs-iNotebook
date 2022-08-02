@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoLogoAppleAr } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -39,6 +39,11 @@ const Signup = () => {
   const handleOnChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    document.title = `iNotebook - Signup`
+    // eslint-disable-next-line
+  }, [])
   return (
     <div className="bg-background flex flex-col h-screen justify-start text-gray-300">
       <p className="flex flex-row pt-12 pl-32 text-3xl align-middle space-x-1 text-primary">

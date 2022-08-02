@@ -10,7 +10,7 @@ import SpeechRecognition, {
 } from 'react-speech-recognition';
 import ToolTip from './common/ToolTip';
 
-const AddNote = ({ uniqueCategories }) => {
+const AddNote = ({ uniqueCategories, inputRef }) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const context = useContext(noteContext);
   const { addNote } = context;
@@ -38,6 +38,7 @@ const AddNote = ({ uniqueCategories }) => {
       <form className="flex flex-col -mx-20 md:mx-1">
         <label htmlFor="title">Title</label>
         <input
+          ref={inputRef}
           value={note.title}
           required
           minLength={5}
@@ -81,6 +82,19 @@ const AddNote = ({ uniqueCategories }) => {
         <p className="text-gray-400">{transcript}</p>
         <div className="text-black my-2 mb-6">
           <CKEditor
+            config={{
+              toolbar: {
+                items: [
+                  'heading',
+                  '|',
+                  'bold',
+                  'italic',
+                  'bulletedList',
+                  'numberedList',
+                  'blockQuote',
+                ],
+              },
+            }}
             editor={ClassicEditor}
             data={note.description}
             onReady={(editor) => {
@@ -88,7 +102,8 @@ const AddNote = ({ uniqueCategories }) => {
             }}
             onChange={(event, editor) => {
               const data = editor.getData();
-              note.description = data;
+              // note.description = data;
+              setNote(prev => ({ ...prev, description: data }));
             }}
           />
         </div>
@@ -120,6 +135,8 @@ const AddNote = ({ uniqueCategories }) => {
           ))}
         </datalist>
         <button
+          data-tip
+          data-for='addButton'
           disabled={note.title.length <= 4 || note.description.length <= 4}
           onClick={handleSubmit}
           type="submit"

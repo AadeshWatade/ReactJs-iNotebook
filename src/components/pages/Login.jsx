@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoLogoAppleAr } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -40,6 +40,10 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = `iNotebook - Login`
+    // eslint-disable-next-line
+  }, [])
   return (
     <div className="h-screen bg-background text-gray-300">
       <p className="flex flex-row pt-12 px-32 text-3xl align-middle space-x-1 text-primary">

@@ -25,7 +25,6 @@
     --navbar: '#020202',
   }
 }
-
 .ck {
   --ck-custom-background: #090909;
   --ck-custom-foreground: #2d2d2f;
@@ -62,7 +61,7 @@
   list-style-type: disc;
   padding-left: 1em;
 }
-.ck ol {
+ol {
   list-style-type: decimal;
   padding-left: 1em;
 }

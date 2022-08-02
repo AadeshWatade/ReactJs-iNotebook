@@ -41,6 +41,7 @@ const NoteState = ({ children }) => {
         'auth-token': localStorage.getItem('loginToken'),
       },
     });
+    // eslint-disable-next-line
     const json = await response.json();
     const newNotes = notes.filter((note) => {
       return note._id !== id;
@@ -58,6 +59,7 @@ const NoteState = ({ children }) => {
       },
       body: JSON.stringify({ title, description, tag }),
     });
+    // eslint-disable-next-line
     const json = await response.json();
     let newNotes = JSON.parse(JSON.stringify(notes));
     for (let index = 0; index < newNotes.length; index++) {

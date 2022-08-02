@@ -3,7 +3,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import ToolTip from "./ToolTip";
 
-const ScrollToTop = () => {
+const ScrollToTop = ({ goToTop }) => {
     const [showButton, setShowButton] = useState(false);
     useEffect(() => {
         window.addEventListener("scroll", () => {
@@ -14,12 +14,7 @@ const ScrollToTop = () => {
             }
         });
     }, []);
-    const goToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
-    };
+
     useEffect(() => {
         AOS.init();
     }, []);
