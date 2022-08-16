@@ -1,9 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment, useContext, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import noteContext from '../context/notes/noteContext';
+import Loader from './common/Loader';
 import ToolTip from './common/ToolTip';
 
 const NoteItem = (props) => {
@@ -15,13 +16,21 @@ const NoteItem = (props) => {
   const ref = useRef(null);
   const refClose = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
+
 
   const closeModal = () => {
     setIsOpen(false);
+    setTimeout(() => {
+      setLoading(true);
+    }, 1000);
   };
 
   const openModal = () => {
     setIsOpen(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
   const DeleteNote = () => {
     let text = "Are you sure you want to delete this note?";
@@ -83,18 +92,12 @@ const NoteItem = (props) => {
                     ) : (
                       ''
                     )}
-                    {/* <AiOutlineCopy
-                      onClick={() => {
-                        navigator.clipboard.writeText(note.description);
-                        toast.success('Copied to clipboard!');
-                      }}
-                      className="text-primary text-2xl hover:cursor-pointer"
-                    /> */}
                   </div>
-                  <p
-                    dangerouslySetInnerHTML={{ __html: note.description }}
-                    className=""
-                  />
+                  {loading ? <Loader noteLoad /> :
+                    <p
+                      dangerouslySetInnerHTML={{ __html: note.description }}
+                      className=""
+                    />}
                 </div>
               </div>
             </Transition.Child>

@@ -26,9 +26,13 @@ const ScrollToTop = ({ goToTop }) => {
                         data-tip
                         data-for='addNote'
                         data-aos="fade-up"
-                        className="fixed text-background bottom-16 right-20 z-10 bg-primary rounded-full px-[14px] py-1 text-3xl cursor-pointer"
+                        // className="btn fixed bottom-16 right-20 text-background z-10 bg-primary rounded-full px-[14px] py-1 text-3xl cursor-pointer"
+                        className="btn fixed bottom-16 right-0 z-10 text-background"
                         onClick={goToTop}
-                    >&#x2B;</button>
+                    ><span class="circle">
+                            <span class="icon arrow text-4xl">+</span>
+                        </span>
+                        <span class="button-text -mx-4">Add a note</span></button>
                     <ToolTip id='addNote' place='top' title='Add a New Note' />
                 </>
             )}

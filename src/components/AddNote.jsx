@@ -32,8 +32,8 @@ const AddNote = ({ uniqueCategories, inputRef }) => {
 
   return (
     <>
-      <p className="flex flex-row mb-6 text-3xl">
-        <AiFillFileAdd className="my-auto mx-2" /> Add a Note!
+      <p className="flex flex-row mb-6 text-lg md:text-3xl">
+        <AiFillFileAdd className="my-auto md:mx-2" /> Add a Note!
       </p>
       <form className="flex flex-col -mx-20 md:mx-1">
         <label htmlFor="title">Title</label>

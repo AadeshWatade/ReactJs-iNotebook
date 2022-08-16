@@ -23,7 +23,7 @@ import ScrollToTop from './common/ScrollToTop';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import InfiniteScroll from 'react-infinite-scroll-component'
-// import Loader from './common/Loader';
+import Loader from './common/Loader';
 
 
 
@@ -37,12 +37,19 @@ const Notes = () => {
   const refClose = useRef(null);
   const inputRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [note, setNote] = useState({
     id: '',
     etitle: '',
     edescription: '',
     etag: '',
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem('loginToken')) {
@@ -237,13 +244,13 @@ const Notes = () => {
       <ScrollToTop goToTop={goToTop} />
 
       <div className="flex flex-row mt-16 mb-6 justify-between -mx-20 md:mx-3">
-        <p className="text-2xl flex flex-row">
+        <p className="text-sm md:text-xl lg:text-2xl flex flex-row my-auto">
           <RiFileEditFill className="my-auto mx-2" /> Your Notes
         </p>
         <div className="flex flex-row">
-          <IoSearchCircle className="absolute text-primary text-4xl -mt-[2px] -ml-[3px] " />
+          <IoSearchCircle className="absolute text-primary text-4xl -mt-[1.5px] -ml-[3.5px] " />
           <input
-            className="bg-background p-1 border rounded-full pl-9 text-sm"
+            className="bg-background p-1 border rounded-full pl-9 text-xs md:text-sm w-36 md:w-auto max-h-8 my-auto"
             id="input"
             label="Search"
             placeholder='"Search in notes"'
@@ -278,6 +285,7 @@ const Notes = () => {
                             <span
                               onClick={(e) => {
                                 setTagValue(categories);
+                                setSearchText('')
                                 console.log(tagValue);
                               }}
                               className={`block truncate ${selected ? 'font-medium' : 'font-normal'
@@ -297,46 +305,49 @@ const Notes = () => {
           <ToolTip id="tags" place="top" title="Sort by Tags" />
         </div>
       </div>
-      {searchText ? (
-        <p className="text-xl text-gray-500 text-center">
-          Showing search results for "<i>{searchText}</i>"...
-        </p>
-      ) : (
-        ''
-      )}
-      {notes.length === 0 && <p className="p-8">No notes to display :(</p>}
-      {/* <InfiniteScroll
+      {loading ? <Loader /> : <>
+        {searchText ? (
+          <p className="text-xl text-gray-500 text-center">
+            Showing search results for "<i>{searchText}</i>"...
+          </p>
+        ) : (
+          ''
+        )}
+        {/* <InfiniteScroll
         dataLength={noteData.length}
         next={fetchData}
         hasMore={hasMore}
         loader={<Loader />}
       > */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto mx-2 my-3">
-        {notes
-          .filter((note) => {
-            if (searchText === '') {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-auto mx-2 my-3">
+          {notes
+            .filter((note) => {
+              if (searchText === '') {
+                return (
+                  <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                );
+              } else if (
+                note.title.toLowerCase().includes(searchText.toLowerCase()) ||
+                note.description
+                  .toLowerCase()
+                  .includes(searchText.toLowerCase()) ||
+                note.tag.toLowerCase().includes(searchText.toLowerCase())
+              ) {
+                return (
+                  <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                );
+              }
+            })
+            .map((note) => {
               return (
                 <NoteItem key={note._id} updateNote={updateNote} note={note} />
               );
-            } else if (
-              note.title.toLowerCase().includes(searchText.toLowerCase()) ||
-              note.description
-                .toLowerCase()
-                .includes(searchText.toLowerCase()) ||
-              note.tag.toLowerCase().includes(searchText.toLowerCase())
-            ) {
-              return (
-                <NoteItem key={note._id} updateNote={updateNote} note={note} />
-              );
-            }
-          })
-          .map((note) => {
-            return (
-              <NoteItem key={note._id} updateNote={updateNote} note={note} />
-            );
-          })
-          .reverse()}
-      </div>
+            })
+            .reverse()}
+        </div>
+        {notes.length === 0 && <p className="p-8">No notes to display :(</p>}
+
+      </>}
       {/* </InfiniteScroll> */}
     </div>
   );
