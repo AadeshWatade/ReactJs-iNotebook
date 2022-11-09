@@ -10,7 +10,7 @@ module.exports = {
         // primary: '#7a12c9',
         // primary: '#0dde61',
         background: '#090909',
-        lightBackground: '#fff',
+        lightBackground: '#fafafa',
         navbar: '#020202',
       },
     },

@@ -10,7 +10,7 @@ import SpeechRecognition, {
 } from 'react-speech-recognition';
 import ToolTip from './common/ToolTip';
 
-const AddNote = ({ uniqueCategories, inputRef, selectedColor }) => {
+const AddNote = ({ uniqueCategories, inputRef, currentTheme }) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const context = useContext(noteContext);
   const { addNote } = context;
@@ -47,7 +47,7 @@ const AddNote = ({ uniqueCategories, inputRef, selectedColor }) => {
           onChange={onChange}
           id="title"
           placeholder="Title (min 5 characters)"
-          className={`border ${selectedColor === 'dark' ? 'text-white' : 'border-black text-black'}  p-2 my-2 mb-6 bg-transparent focus:border-primary`}
+          className={`border ${currentTheme === 'dark' ? 'text-white' : 'border-black text-black'}  p-2 my-2 mb-6 bg-transparent focus:outline-primary`}
         />
         <div className="flex flex-row justify-between">
           <label htmlFor="description">Description</label>
@@ -127,7 +127,7 @@ const AddNote = ({ uniqueCategories, inputRef, selectedColor }) => {
           onChange={onChange}
           id="tag"
           placeholder="Enter a Tag"
-          className={`border ${selectedColor === 'dark' ? 'text-white' : 'border-black text-black'}  p-2 my-2 bg-transparent`}
+          className={`border ${currentTheme === 'dark' ? 'text-white' : 'border-black text-black'}  p-2 my-2 bg-transparent focus:outline-primary`}
         />
         <datalist id="tags">
           {uniqueCategories.map((categories) => (

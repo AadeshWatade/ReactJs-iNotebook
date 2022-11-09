@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { Menu, Transition } from '@headlessui/react';
 import noteContext from '../../context/notes/noteContext';
 import { themeContext } from '../../context/theme/theme';
+import ToolTip from './ToolTip';
 
 const Navbar = () => {
   const context = useContext(noteContext);
@@ -20,8 +21,8 @@ const Navbar = () => {
     }
   }, []);
 
-  const themeS = useContext(themeContext)
-  const { selectedColor, onColorChange } = themeS
+  const theme = useContext(themeContext)
+  const { currentTheme, onThemeChange } = theme
   const handleLogout = () => {
     localStorage.removeItem('loginToken');
     toast.success('Logged out successfully!', {
@@ -41,7 +42,7 @@ const Navbar = () => {
     <>
       {localStorage.getItem('loginToken') ? (
         <div
-          className={`flex justify-between px-6 ${selectedColor === 'dark' ? 'bg-navbar text-white' : 'bg-[#f0f0f0] text-black'} border-b-0 border-b-primary`}>
+          className={`flex justify-between sticky top-0 px-6 ${currentTheme === 'dark' ? 'bg-navbar text-white' : 'bg-[#d5e7ff] text-black'} border-b-0 border-b-primary`}>
           <div className="flex flex-row space-x-6 p-4 text-lg ">
             <Link
               to="/"
@@ -58,10 +59,11 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex flex-row">
-            {selectedColor === 'dark' ?
-              <button onClick={() => onColorChange('light')}><BsFillSunFill className='my-auto mx-4 text-lg' /> </button> :
-              <button onClick={() => onColorChange('dark')}><HiOutlineMoon className='my-auto mx-4 text-lg' /></button>
+            {currentTheme === 'dark' ?
+              (<><button data-tip data-for="lightmode" className='my-auto' onClick={() => onThemeChange('light')}><BsFillSunFill className='mx-4 text-lg' /> </button> <ToolTip id="lightmode" place="bottom" title="Light mode" /></>) :
+              (<><button data-tip data-for="darkmode" className='my-auto' onClick={() => onThemeChange('dark')}><HiOutlineMoon className='mx-4 text-lg' /></button> <ToolTip id="darkmode" place="bottom" title="Dark mode" /></>)
             }
+
 
             <Menu as="div" className="relative inline-block text-left my-auto">
               <Menu.Button className="inline-flex group w-full justify-center rounded-md bg-opacity-20 px-2 py-1 space-x-2 font-medium hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 border border-gray-500">

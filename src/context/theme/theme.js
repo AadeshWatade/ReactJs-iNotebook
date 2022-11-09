@@ -1,8 +1,8 @@
 import { createContext, useState } from 'react';
 
 export const themeContext = createContext({
-  selectedColor: null,
-  onColorChange: (newColor) => {},
+  currentTheme: null,
+  onThemeChange: (newColor) => {},
 });
 
 export const ThemeContextProvider = ({ children }) => {
@@ -12,8 +12,8 @@ export const ThemeContextProvider = ({ children }) => {
     setColor(c);
   };
   const contextValue = {
-    selectedColor: color,
-    onColorChange: handleColorChange,
+    currentTheme: color,
+    onThemeChange: handleColorChange,
   };
   return (
     <themeContext.Provider value={contextValue}>

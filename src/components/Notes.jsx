@@ -126,12 +126,12 @@ const Notes = () => {
     document.title = `iNotebook - Home`
     // eslint-disable-next-line
   }, [])
-  const themeS = useContext(themeContext)
-  const { selectedColor } = themeS
-  console.log(selectedColor)
+  const theme = useContext(themeContext)
+  const { currentTheme } = theme
+  console.log(currentTheme)
   return (
-    <div className={`py-16 px-32 ${selectedColor === 'dark' ? 'bg-background text-white' : 'bg-lightBackground text-navbar'}`}>
-      <AddNote uniqueCategories={uniqueCategories} inputRef={inputRef} selectedColor={selectedColor} />
+    <div className={`py-16 px-32 ${currentTheme === 'dark' ? 'bg-background text-white' : 'bg-lightBackground text-navbar'}`}>
+      <AddNote uniqueCategories={uniqueCategories} inputRef={inputRef} currentTheme={currentTheme} />
       <button ref={ref} type="button" onClick={openModal} className="hidden">
         Open dialog
       </button>
@@ -165,7 +165,7 @@ const Notes = () => {
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95">
-              <div className={`inline-block ${selectedColor === 'dark' ? 'bg-[#020202] text-white' : 'bg-lightBackground text-black'} text-white w-full border border-primary max-w-lg shadow-primary p-6 my-8 overflow-hidden text-left align-middle transition-all transform shadow-lg rounded-2xl`}>
+              <div className={`inline-block ${currentTheme === 'dark' ? 'bg-[#020202] text-white' : 'bg-lightBackground text-black'} text-white w-full border border-primary max-w-lg shadow-primary p-6 my-8 overflow-hidden text-left align-middle transition-all transform shadow-lg rounded-2xl`}>
                 <Dialog.Title
                   as="h3"
                   className="text-2xl my-3 font-medium leading-6 text-primary text-center">
@@ -253,7 +253,7 @@ const Notes = () => {
         <div className="flex flex-row relative">
           <IoSearch className="absolute text-primary text-lg md:text-2xl top-1.5 md:top-1 left-1" />
           <input
-            className={`bg-transparent ${selectedColor !== 'dark' && 'border-black'} p-1 border rounded-full pl-9 text-xs md:text-sm w-36 md:w-auto max-h-8 my-auto`}
+            className={`bg-transparent ${currentTheme !== 'dark' && 'border-black'} p-1 border rounded-full pl-9 text-xs md:text-sm w-36 md:w-auto max-h-8 my-auto`}
             id="input"
             label="Search"
             placeholder='"Search in notes"'
@@ -274,7 +274,7 @@ const Notes = () => {
                   leave="transition ease-in duration-100"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0">
-                  <Listbox.Options className={`absolute mt-1 ${selectedColor === 'dark' ? 'text-white' : 'text-black'} z-10 overflow-auto right-2 rounded-md bg-transparent py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary`}>
+                  <Listbox.Options className={`absolute mt-1 ${currentTheme === 'dark' ? 'text-white' : 'text-black'} z-10 overflow-auto right-2 rounded-md bg-transparent py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary`}>
                     {uniqueCategories.map((categories) => (
                       <Listbox.Option
                         key={categories}
@@ -292,7 +292,7 @@ const Notes = () => {
                                 console.log(tagValue);
                               }}
                               className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                } ${selectedColor === 'dark' ? 'text-white' : 'text-black'}`}>
+                                } ${currentTheme === 'dark' ? 'text-white' : 'text-black'}`}>
                               {categories}
                             </span>
                             {selected ? '' : null}
@@ -327,7 +327,7 @@ const Notes = () => {
             .filter((note) => {
               if (searchText === '') {
                 return (
-                  <NoteItem selectedColor={selectedColor} key={note._id} updateNote={updateNote} note={note} />
+                  <NoteItem currentTheme={currentTheme} key={note._id} updateNote={updateNote} note={note} />
                 );
               } else if (
                 note.title.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -337,13 +337,13 @@ const Notes = () => {
                 note.tag.toLowerCase().includes(searchText.toLowerCase())
               ) {
                 return (
-                  <NoteItem selectedColor={selectedColor} key={note._id} updateNote={updateNote} note={note} />
+                  <NoteItem currentTheme={currentTheme} key={note._id} updateNote={updateNote} note={note} />
                 );
               }
             })
             .map((note) => {
               return (
-                <NoteItem selectedColor={selectedColor} key={note._id} updateNote={updateNote} note={note} />
+                <NoteItem currentTheme={currentTheme} key={note._id} updateNote={updateNote} note={note} />
               );
             })
             .reverse()}
