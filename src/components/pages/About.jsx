@@ -5,6 +5,7 @@ const About = () => {
     document.title = `iNotebook - About`
     // eslint-disable-next-line
   }, [])
+
   return (
     <div className="bg-background h-screen text-white px-16 py-4">
       <br />

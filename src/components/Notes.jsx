@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 import { Dialog, Listbox, Transition } from '@headlessui/react';
 
-import { IoCloseCircle, IoSearchCircle } from 'react-icons/io5';
+import { IoCloseCircle, IoSearch } from 'react-icons/io5';
 import { GoKebabVertical } from 'react-icons/go';
 import { RiFileEditFill } from 'react-icons/ri';
 import { AiOutlineEdit } from 'react-icons/ai';
@@ -24,6 +24,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import InfiniteScroll from 'react-infinite-scroll-component'
 import Loader from './common/Loader';
+import { themeContext } from '../context/theme/theme';
 
 
 
@@ -57,7 +58,6 @@ const Notes = () => {
     } else {
       navigate('/login');
     }
-    // eslint-disable-next-line
   }, []);
 
   const updateNote = (currentNote) => {
@@ -126,9 +126,12 @@ const Notes = () => {
     document.title = `iNotebook - Home`
     // eslint-disable-next-line
   }, [])
+  const themeS = useContext(themeContext)
+  const { selectedColor } = themeS
+  console.log(selectedColor)
   return (
-    <div className="py-16 px-32 bg-background text-white">
-      <AddNote uniqueCategories={uniqueCategories} inputRef={inputRef} />
+    <div className={`py-16 px-32 ${selectedColor === 'dark' ? 'bg-background text-white' : 'bg-lightBackground text-navbar'}`}>
+      <AddNote uniqueCategories={uniqueCategories} inputRef={inputRef} selectedColor={selectedColor} />
       <button ref={ref} type="button" onClick={openModal} className="hidden">
         Open dialog
       </button>
@@ -162,7 +165,7 @@ const Notes = () => {
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95">
-              <div className="inline-block bg-[#020202] text-white w-full border border-primary max-w-lg shadow-primary p-6 my-8 overflow-hidden text-left align-middle transition-all transform shadow-lg rounded-2xl">
+              <div className={`inline-block ${selectedColor === 'dark' ? 'bg-[#020202] text-white' : 'bg-lightBackground text-black'} text-white w-full border border-primary max-w-lg shadow-primary p-6 my-8 overflow-hidden text-left align-middle transition-all transform shadow-lg rounded-2xl`}>
                 <Dialog.Title
                   as="h3"
                   className="text-2xl my-3 font-medium leading-6 text-primary text-center">
@@ -188,7 +191,7 @@ const Notes = () => {
                     className="border p-2 mb-4 text-black"
                   />
                   <span className="text-black">
-                    <label className="text-white" htmlFor="edescription">
+                    <label className="" htmlFor="edescription">
                       Description
                     </label>
                     {/* <textarea
@@ -214,7 +217,7 @@ const Notes = () => {
                       }}
                     />
                   </span>
-                  <label htmlFor="etag">Tag</label>
+                  <label className='mt-3' htmlFor="etag">Tag</label>
                   <input
                     type="text"
                     name="etag"
@@ -229,7 +232,7 @@ const Notes = () => {
                 <div className="mt-4 space-x-2 flex justify-center">
                   <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-[#090909]  hover:text-primary text-white border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-background hover:text-primary text-white border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={handleClick}>
                     <AiOutlineEdit className="my-auto text-lg mr-2 text-primary" />
                     Update Note
@@ -247,10 +250,10 @@ const Notes = () => {
         <p className="text-sm md:text-xl lg:text-2xl flex flex-row my-auto">
           <RiFileEditFill className="my-auto mx-2" /> Your Notes
         </p>
-        <div className="flex flex-row">
-          <IoSearchCircle className="absolute text-primary text-4xl -mt-[1.5px] -ml-[3.5px] " />
+        <div className="flex flex-row relative">
+          <IoSearch className="absolute text-primary text-lg md:text-2xl top-1.5 md:top-1 left-1" />
           <input
-            className="bg-background p-1 border rounded-full pl-9 text-xs md:text-sm w-36 md:w-auto max-h-8 my-auto"
+            className={`bg-transparent ${selectedColor !== 'dark' && 'border-black'} p-1 border rounded-full pl-9 text-xs md:text-sm w-36 md:w-auto max-h-8 my-auto`}
             id="input"
             label="Search"
             placeholder='"Search in notes"'
@@ -259,7 +262,7 @@ const Notes = () => {
           <div>
             <Listbox value={selected} onChange={setSelected}>
               <div className="relative mt-1">
-                <Listbox.Button className="cursor-default rounded-lg ml-2 bg-background h-full px-2 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                <Listbox.Button className="cursor-default rounded-lg ml-2 bg-transparent h-full px-2 text-left focus:outline-none sm:text-sm">
                   <GoKebabVertical
                     data-tip
                     data-for="tags"
@@ -271,7 +274,7 @@ const Notes = () => {
                   leave="transition ease-in duration-100"
                   leaveFrom="opacity-100"
                   leaveTo="opacity-0">
-                  <Listbox.Options className="absolute mt-1 z-10 overflow-auto rounded-md bg-background py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary">
+                  <Listbox.Options className={`absolute mt-1 ${selectedColor === 'dark' ? 'text-white' : 'text-black'} z-10 overflow-auto right-2 rounded-md bg-transparent py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-primary`}>
                     {uniqueCategories.map((categories) => (
                       <Listbox.Option
                         key={categories}
@@ -289,7 +292,7 @@ const Notes = () => {
                                 console.log(tagValue);
                               }}
                               className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                }`}>
+                                } ${selectedColor === 'dark' ? 'text-white' : 'text-black'}`}>
                               {categories}
                             </span>
                             {selected ? '' : null}
@@ -324,7 +327,7 @@ const Notes = () => {
             .filter((note) => {
               if (searchText === '') {
                 return (
-                  <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                  <NoteItem selectedColor={selectedColor} key={note._id} updateNote={updateNote} note={note} />
                 );
               } else if (
                 note.title.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -334,18 +337,18 @@ const Notes = () => {
                 note.tag.toLowerCase().includes(searchText.toLowerCase())
               ) {
                 return (
-                  <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                  <NoteItem selectedColor={selectedColor} key={note._id} updateNote={updateNote} note={note} />
                 );
               }
             })
             .map((note) => {
               return (
-                <NoteItem key={note._id} updateNote={updateNote} note={note} />
+                <NoteItem selectedColor={selectedColor} key={note._id} updateNote={updateNote} note={note} />
               );
             })
             .reverse()}
         </div>
-        {notes.length === 0 && <p className="p-8">No notes to display :(</p>}
+        {notes.length === 0 && <p className="p-8">Wow, such empty :(</p>}
 
       </>}
       {/* </InfiniteScroll> */}

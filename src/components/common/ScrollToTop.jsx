@@ -27,7 +27,7 @@ const ScrollToTop = ({ goToTop }) => {
                         data-for='addNote'
                         data-aos="fade-up"
                         // className="btn fixed bottom-16 right-20 text-background z-10 bg-primary rounded-full px-[14px] py-1 text-3xl cursor-pointer"
-                        className="btn fixed bottom-16 right-0 z-10 text-background"
+                        className="btn fixed bottom-16 -right-6 z-10 text-background"
                         onClick={goToTop}
                     ><span class="circle">
                             <span class="icon arrow text-4xl">+</span>

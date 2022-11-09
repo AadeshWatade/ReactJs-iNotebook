@@ -10,7 +10,7 @@ import SpeechRecognition, {
 } from 'react-speech-recognition';
 import ToolTip from './common/ToolTip';
 
-const AddNote = ({ uniqueCategories, inputRef }) => {
+const AddNote = ({ uniqueCategories, inputRef, selectedColor }) => {
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
   const context = useContext(noteContext);
   const { addNote } = context;
@@ -32,7 +32,7 @@ const AddNote = ({ uniqueCategories, inputRef }) => {
 
   return (
     <>
-      <p className="flex flex-row mb-6 text-lg md:text-3xl">
+      <p className="flex flex-row mb-6 text-xl md:text-3xl justify-center md:justify-start">
         <AiFillFileAdd className="my-auto md:mx-2" /> Add a Note!
       </p>
       <form className="flex flex-col -mx-20 md:mx-1">
@@ -47,7 +47,7 @@ const AddNote = ({ uniqueCategories, inputRef }) => {
           onChange={onChange}
           id="title"
           placeholder="Title (min 5 characters)"
-          className="border text-white p-2 my-2 mb-6 bg-transparent focus:border-primary"
+          className={`border ${selectedColor === 'dark' ? 'text-white' : 'border-black text-black'}  p-2 my-2 mb-6 bg-transparent focus:border-primary`}
         />
         <div className="flex flex-row justify-between">
           <label htmlFor="description">Description</label>
@@ -127,7 +127,7 @@ const AddNote = ({ uniqueCategories, inputRef }) => {
           onChange={onChange}
           id="tag"
           placeholder="Enter a Tag"
-          className="border text-white p-2 my-2 bg-transparent"
+          className={`border ${selectedColor === 'dark' ? 'text-white' : 'border-black text-black'}  p-2 my-2 bg-transparent`}
         />
         <datalist id="tags">
           {uniqueCategories.map((categories) => (
@@ -140,7 +140,7 @@ const AddNote = ({ uniqueCategories, inputRef }) => {
           disabled={note.title.length <= 4 || note.description.length <= 4}
           onClick={handleSubmit}
           type="submit"
-          className="bg-primary text-black flex place-self-end justify-center w-24 rounded-md p-1 disabled:cursor-not-allowed">
+          className="bg-primary text-black flex place-self-end justify-center w-24 rounded-md p-1 disabled:cursor-not-allowed disabled:opacity-60">
           &#x2B; Add Note
         </button>
       </form>

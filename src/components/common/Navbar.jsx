@@ -1,35 +1,27 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { IoChevronDown, IoLogoAppleAr } from 'react-icons/io5';
 import { FaUserCircle } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
+import { BsFillSunFill } from 'react-icons/bs';
+import { HiOutlineMoon } from 'react-icons/hi';
 import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Menu, Transition } from '@headlessui/react';
+import noteContext from '../../context/notes/noteContext';
+import { themeContext } from '../../context/theme/theme';
 
 const Navbar = () => {
-  const userInitial = []
-  const [user, setUser] = useState(userInitial)
-  const getUser = async () => {
-    const response = await fetch('http://localhost:5000/api/auth/getuser', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        'auth-token': localStorage.getItem('loginToken'),
-      },
-    })
-    const json = await response.json();
-    setUser(json);
-  }
+  const context = useContext(noteContext);
+  const { user, getUser } = context;
+
   useEffect(() => {
     if (localStorage.getItem('loginToken')) {
       getUser();
     }
-    // eslint-disable-next-line
   }, []);
 
-
-
-
+  const themeS = useContext(themeContext)
+  const { selectedColor, onColorChange } = themeS
   const handleLogout = () => {
     localStorage.removeItem('loginToken');
     toast.success('Logged out successfully!', {
@@ -43,17 +35,19 @@ const Navbar = () => {
     });
   };
   const location = useLocation();
+
+
   return (
     <>
       {localStorage.getItem('loginToken') ? (
         <div
-          className={`flex justify-between px-6 bg-navbar text-white border-b-0 border-b-primary`}>
+          className={`flex justify-between px-6 ${selectedColor === 'dark' ? 'bg-navbar text-white' : 'bg-[#f0f0f0] text-black'} border-b-0 border-b-primary`}>
           <div className="flex flex-row space-x-6 p-4 text-lg ">
             <Link
               to="/"
               className={`flex flex-row font-bold hover:text-primary ${location.pathname === '/' ? 'text-primary' : 'text-white'
                 }`}>
-              <IoLogoAppleAr className=" mx-1 flex mt-1" />
+              <IoLogoAppleAr className=" mx-1 flex mt-1 text-primary" />
               <p className="font-bold text-xl">iNotebook</p>
             </Link>
             <Link
@@ -64,10 +58,16 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="flex flex-row">
+            {selectedColor === 'dark' ?
+              <button onClick={() => onColorChange('light')}><BsFillSunFill className='my-auto mx-4 text-lg' /> </button> :
+              <button onClick={() => onColorChange('dark')}><HiOutlineMoon className='my-auto mx-4 text-lg' /></button>
+            }
+
             <Menu as="div" className="relative inline-block text-left my-auto">
-              <Menu.Button className="inline-flex w-full justify-center rounded-md bg-opacity-20 px-2 py-1 space-x-2 font-medium text-white hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 border border-gray-300">
+              <Menu.Button className="inline-flex group w-full justify-center rounded-md bg-opacity-20 px-2 py-1 space-x-2 font-medium hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 border border-gray-500">
                 <FaUserCircle className='m-auto text-lg' /> <p> {user.name}</p>
-                <IoChevronDown className='m-auto text-lg' />
+                <IoChevronDown className='hidden md:inline 
+                m-auto text-lg group-hover:text-primary' />
               </Menu.Button>
               <Transition
                 as={Fragment}
@@ -82,7 +82,7 @@ const Navbar = () => {
                     <Link
                       onClick={handleLogout}
                       to="/login"
-                      className="flex flex-row space-x-1 py-1 text-lg mx-4 ">
+                      className="flex flex-row space-x-1 py-1 text-lg mx-4 hover:text-primary">
                       <FiLogOut className="mt-1" />
                       <p className="justify-self-end">Logout</p>
                     </Link>
@@ -90,7 +90,6 @@ const Navbar = () => {
                 </Menu.Items>
               </Transition>
             </Menu>
-
           </div>
         </div>
       ) : (

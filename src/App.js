@@ -7,6 +7,7 @@ import NoteState from './context/notes/NoteState';
 import { ToastContainer } from 'react-toastify';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
+import { ThemeContextProvider } from './context/theme/theme';
 
 const App = () => {
   return (

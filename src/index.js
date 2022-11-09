@@ -3,10 +3,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { ThemeContextProvider } from './context/theme/theme';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeContextProvider>
+      <App />
+    </ThemeContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
